@@ -7,6 +7,11 @@
 # General application configuration
 import Config
 
+config :file_upload_stock_app, Oban,
+  repo: FileUploadStockApp.Repo,
+  queues: [default: 10]
+
+
 config :file_upload_stock_app,
   ecto_repos: [FileUploadStockApp.Repo],
   generators: [timestamp_type: :utc_datetime]
