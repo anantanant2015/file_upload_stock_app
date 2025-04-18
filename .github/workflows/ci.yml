@@ -1,0 +1,54 @@
+name: CI Pipeline
+
+on:
+  push:
+    branches:
+      - main  # Trigger on pushes to the main branch
+  pull_request:
+    branches:
+      - main  # Trigger on pull requests targeting the main branch
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout the code
+      - name: Checkout Code
+        uses: actions/checkout@v2
+
+      # Step 2: Set up Elixir and Erlang
+      - name: Set up Elixir
+        uses: erlef/setup-elixir@v1
+        with:
+          elixir-version: '1.14'  # Set Elixir version (adjust if necessary)
+          erlang-version: '24.1'  # Set Erlang version (adjust if necessary)
+
+      # Step 3: Cache Hex dependencies to speed up builds
+      - name: Cache Hex dependencies
+        uses: actions/cache@v2
+        with:
+          path: _build
+          key: ${{ runner.os }}-elixir-${{ hashFiles('**/*.ex') }}
+          restore-keys: |
+            ${{ runner.os }}-elixir-
+
+      # Step 4: Install Hex dependencies
+      - name: Install Dependencies
+        run: mix deps.get
+
+      # Step 5: Run tests
+      - name: Run Tests
+        run: mix test
+
+      # Step 6: Build the app (optional)
+      - name: Build the app
+        run: mix release
+
+      # Step 7: Notify success or failure
+      - name: Notify Success or Failure
+        if: success()
+        run: echo "Build and tests passed!"
+
+      # Optional: Deploy your app if the tests pass
+      # You can add deployment steps here, e.g., for Heroku, AWS, or DigitalOcean.
