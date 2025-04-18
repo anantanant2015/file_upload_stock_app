@@ -22,6 +22,9 @@ erl_crash.dump
 # Temporary files, for example, from tests.
 /tmp/
 
+# Temporary upload files.
+/uploads/
+
 # Ignore package tarball (built via "mix hex.build").
 file_upload_stock_app-*.tar
 
@@ -34,4 +37,3 @@ file_upload_stock_app-*.tar
 # In case you use Node.js/npm, you want to ignore these.
 npm-debug.log
 /assets/node_modules/
-
