@@ -3,3 +3,17 @@
 @import "tailwindcss/utilities";
 
 /* This file is for your main application CSS */
+.dropzone {
+  cursor: pointer;
+  transition: background 0.3s;
+}
+.dropzone:hover {
+  background-color: #00ffbf80;
+}
+.hidden-input {
+  display: none;
+}
+
+.max-w-2xl {
+  max-width: 100%;
+}

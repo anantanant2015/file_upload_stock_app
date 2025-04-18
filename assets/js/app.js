@@ -18,21 +18,49 @@
 // Include phoenix_html to handle method=PUT/DELETE in forms and buttons.
 import "phoenix_html"
 // Establish Phoenix Socket and LiveView configuration.
-import {Socket} from "phoenix"
-import {LiveSocket} from "phoenix_live_view"
-import topbar from "../vendor/topbar"
+import { Socket } from "phoenix"
+import { LiveSocket } from "phoenix_live_view"
+import topbar from "./topbar"
+import * as chartHelper from "./chartHelper"
+import { DragDropUpload } from "./hooks/dragDropUploadHook"
+import { Chart } from "./hooks/chartHook"
 
 let csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content")
 let liveSocket = new LiveSocket("/live", Socket, {
   longPollFallbackMs: 2500,
-  params: {_csrf_token: csrfToken}
+  params: { _csrf_token: csrfToken },
+  hooks: {
+    DragDropUpload,
+    Chart
+  }
 })
 
 // Show progress bar on live navigation and form submits
-topbar.config({barColors: {0: "#29d"}, shadowColor: "rgba(0, 0, 0, .3)"})
+topbar.config({ barColors: { 0: "#29d" }, shadowColor: "rgba(0, 0, 0, .3)" })
 window.addEventListener("phx:page-loading-start", _info => topbar.show(300))
 window.addEventListener("phx:page-loading-stop", _info => topbar.hide())
 
+window.addEventListener("click1", e => {
+  console.log("click event by user!", e.value)
+});
+
+window.addEventListener("submit", e => {
+
+  console.log("click submit by user!", e.detail)
+});
+
+window.addEventListener("removedata", e => {
+  chartHelper.clearChartCanvas('price-chart-canvas');
+  console.log("remove data clicked!", e.chart_data)
+});
+
+
+window.addEventListener("adddata", e => {
+  const chartConfig = JSON.parse(e.detail);
+
+  chartHelper.renderChart('price-chart-canvas', chartConfig.type, chartConfig.chartData, chartConfig.chartOptions)
+  console.log("add data clicked!", JSON.parse(e.detail));
+});
 // connect if there are any LiveViews on the page
 liveSocket.connect()
 
@@ -41,4 +69,3 @@ liveSocket.connect()
 // >> liveSocket.enableLatencySim(1000)  // enabled for duration of browser session
 // >> liveSocket.disableLatencySim()
 window.liveSocket = liveSocket
-
