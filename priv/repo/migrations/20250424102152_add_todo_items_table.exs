@@ -9,7 +9,7 @@ defmodule FileUploadStockApp.Repo.Migrations.AddTodoItemsTable do
     timestamps()
   end
 
-  create index(:data, [:timestamp])
+  create index(:todo_items, [:timestamp])
 
   end
 end
