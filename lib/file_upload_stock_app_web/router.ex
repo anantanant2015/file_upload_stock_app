@@ -20,6 +20,7 @@ defmodule FileUploadStockAppWeb.Router do
     # get "/", PageController, :home
 
     live "/", PageLive
+    live "/todo", Todo
   end
 
   # Other scopes may use custom stacks.
