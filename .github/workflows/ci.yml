@@ -35,7 +35,8 @@ jobs:
         uses: erlef/setup-elixir@v1
         with:
           elixir-version: '1.14'
-          otp-version: '24.1' # ✅ Fixed: changed from erlang-version to otp-version
+          otp-version: '25.3' # ✅ Updated to a supported OTP version
+          version-type: strict
 
       - name: Restore build cache
         uses: actions/cache@v3
