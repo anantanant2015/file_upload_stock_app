@@ -21,6 +21,7 @@ defmodule FileUploadStockAppWeb.Router do
 
     live "/", PageLive
     live "/todo", Todo
+    live "/counter", Counter
   end
 
   # Other scopes may use custom stacks.
